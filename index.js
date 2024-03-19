@@ -1,4 +1,4 @@
-
+require('dotenv').config()
 //config inicial
 const express = require('express');
 const app = express();
@@ -13,6 +13,13 @@ app.use(
 
 app.use(express.json())
 
+// rotas da api 
+
+const personRoutes = require('./routes/personRoutes');
+
+app.use('/person', personRoutes)
+
+
 // rota inicial // endpoint
 app.get('/', (req, res) => {
 
@@ -26,13 +33,14 @@ app.get('/', (req, res) => {
 
 // entregar um porta
 
-mongoose.connect('mongodb+srv://ramosgsrc:gabriel123@apicluster.jgzw5pz.mongodb.net/')
+const DB_Login = process.env.DB_user
+const DB_Password = encodeURIComponent(process.env.DB_password)
+
+mongoose.connect(`mongodb+srv://${DB_Login}:${DB_Password}@apicluster.jgzw5pz.mongodb.net/`)
 .then(() => {
-    app.listen(3000)
+    app.listen(3001)
     console.log('conectado ao MongoDB')
    
 })
 .catch((err) => console.log(err))
 
-
-app.listen(3000)
